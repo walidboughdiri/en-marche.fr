@@ -263,6 +263,12 @@ old_sound_rabbit_mq:
             connection: default
             exchange_options: { name: 'project_citizen_creation_notification', type: direct }
 
+        citizen_project_summary:
+            connection: default
+            exchange_options: { name: 'citizen_project_summary', type: direct }
+            queue_options:    { name: 'citizen_project_summary', durable: true }
+            class:            AppBundle\Producer\CitizenProjectSummaryProducer
+
     consumers:
         mailer_campaign:
             connection:        default
@@ -290,6 +296,13 @@ old_sound_rabbit_mq:
             exchange_options:  { name: 'project_citizen_creation_notification', type: direct }
             queue_options:     { name: 'project_citizen_creation_notification', durable: false }
             callback:          AppBundle\Consumer\ProjectCitizenCreationNotificationConsumer
+            qos_options:       { prefetch_size: 0, prefetch_count: 1, global: false }
+
+        citizen_project_summary:
+            connection:        default
+            exchange_options:  { name: 'citizen_project_summary', type: direct }
+            queue_options:     { name: 'citizen_project_summary', durable: true }
+            callback:          AppBundle\Consumer\CitizenProjectSummaryConsumer
             qos_options:       { prefetch_size: 0, prefetch_count: 1, global: false }
 
 knp_snappy:
