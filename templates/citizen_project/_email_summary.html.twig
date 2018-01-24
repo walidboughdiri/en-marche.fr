@@ -8,4 +8,16 @@
        <div>{{ citizen_project.cityName }}</div>
     </div>
     {% endfor %}
+    <br/>
+    <div>
+        <a href="{{ url('app_search_citizen_projects') }}">Voir tous les projets citoyens</a>
+    </div>
+    <br/>
+    <div>
+        Vous pouvez à tout moment gérer vos notifications <a href="{{ url('app_user_set_email_notifications') }}">ici</a>
+        <br/>
+        <br/>
+        À bientôt,<br/>
+        L’équipe Projets Citoyens de La République En Marche
+    </div>
 </div>
