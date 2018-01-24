@@ -152,7 +152,9 @@ class CitizenProjectRepository extends BaseGroupRepository
      * @return CitizenProject[]
      */
     public function findNearByCitizenProjectsForAdherent(
-        Adherent $adherent, int $limit, ?string $approvedSince
+        Adherent $adherent,
+        int $limit,
+        ?string $approvedSince
     ): array {
         $qb = $this
             ->createNearbyQueryBuilder(new Coordinates($adherent->getLatitude(), $adherent->getLongitude()));
