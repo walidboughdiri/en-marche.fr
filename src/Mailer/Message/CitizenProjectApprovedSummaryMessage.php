@@ -7,7 +7,7 @@ use Ramsey\Uuid\Uuid;
 
 final class CitizenProjectApprovedSummaryMessage extends Message
 {
-    public static function create(Adherent $adherent, string $summary): self
+    public static function create(Adherent $adherent, string $summary, array $urls): self
     {
         $message = new self(
             Uuid::uuid4(),
@@ -18,6 +18,8 @@ final class CitizenProjectApprovedSummaryMessage extends Message
             [
                 'target_firstname' => self::escape($adherent->getFirstName()),
                 'citizen_project_list' => $summary,
+                'all_citizen_projects_url' => $urls['all_citizen_projects_url'],
+                'email_notifications_url' => $urls['email_notifications_url'],
             ]
         );
 
