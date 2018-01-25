@@ -59,23 +59,23 @@ class CitizenProjectBroadcaster
             ]
         );
 
-        $urls = [
-            'all_citizen_projects_url' => $this->urlGenerator->generate(
-                'app_search_citizen_projects',
-                [],
-                UrlGeneratorInterface::ABSOLUTE_URL
-            ),
-            'email_notifications_url' => $this->urlGenerator->generate(
-                'app_user_set_email_notifications',
-                [],
-                UrlGeneratorInterface::ABSOLUTE_URL
-            ),
-        ];
+        $allCitizenProjectsUrl = $this->urlGenerator->generate(
+            'app_search_citizen_projects',
+            [],
+            UrlGeneratorInterface::ABSOLUTE_URL
+        );
+
+        $emailNotificationsUrl = $this->urlGenerator->generate(
+            'app_user_set_email_notifications',
+            [],
+            UrlGeneratorInterface::ABSOLUTE_URL
+        );
 
         return CitizenProjectApprovedSummaryMessage::create(
             $adherent,
             $summary,
-            $urls
+            $allCitizenProjectsUrl,
+            $emailNotificationsUrl
         );
     }
 }
