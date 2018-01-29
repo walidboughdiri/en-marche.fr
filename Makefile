@@ -176,7 +176,7 @@ up:
 	$(FIG) up -d
 
 perm:
-	-$(EXEC) chmod -R 777 var
+	-$(EXEC) chmod -R 777 var vendor
 
 # Rules from files
 
