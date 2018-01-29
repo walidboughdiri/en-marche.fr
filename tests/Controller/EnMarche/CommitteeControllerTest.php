@@ -12,17 +12,13 @@ use AppBundle\Entity\Committee;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\AppBundle\Controller\ControllerTestTrait;
-use Tests\AppBundle\MysqlWebTestCase;
 
 /**
  * @group functional
  * @group committee
  */
-class CommitteeControllerTest extends MysqlWebTestCase
+class CommitteeControllerTest extends AbstractGroupControllerTest
 {
-    use ControllerTestTrait;
-
     private $committeeRepository;
 
     public function testRedirectionComiteFromOldUrl()
@@ -34,6 +30,18 @@ class CommitteeControllerTest extends MysqlWebTestCase
         $this->client->followRedirect();
 
         $this->isSuccessful($this->client->getResponse());
+    }
+
+    public function testAnonymousUserIsNotAllowedToFollowCommittee()
+    {
+        $committeeUrl = '/comites/en-marche-dammarie-les-lys';
+
+        $crawler = $this->client->request(Request::METHOD_GET, $committeeUrl);
+
+        $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
+        $this->assertFalse($this->seeFollowLink($crawler));
+        $this->assertFalse($this->seeUnfollowLink($crawler));
+        $this->assertTrue($this->seeRegisterLink($crawler));
     }
 
     public function testAuthenticatedCommitteeSupervisorCannotUnfollowCommittee()
@@ -522,6 +530,11 @@ class CommitteeControllerTest extends MysqlWebTestCase
         $this->committeeRepository = null;
 
         parent::tearDown();
+    }
+
+    protected function getGroupUrl(): string
+    {
+        return '/comites/en-marche-dammarie-les-lys';
     }
 
     private function assertEditDeleteButton(Crawler $crawler, int $nbExpected)
