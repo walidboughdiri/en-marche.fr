@@ -3,7 +3,10 @@ inappropriate: Ce n'est pas du contenu approprié
 commercial_content: Il s'agit de contenu commercial
 other: Autre
 
+report.type.citizen_action: Action citoyenne
 report.type.citizen_project: Projet citoyen
+report.type.committee: Comité
+report.type.community_event: Événement
 
 resolved: 'Résolu'
 unresolved: 'Non résolu'
