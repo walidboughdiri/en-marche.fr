@@ -80,6 +80,12 @@ class App {
         });
     }
 
+    runReport() {
+        System.import('pages/report').catch((error) => { throw error; }).then((module) => {
+            module.default();
+        });
+    }
+
     runCommitteesMap() {
         System.import('pages/committees_map').catch((error) => { throw error; }).then((module) => {
             module.default(this.get('map_factory'), this.get('api'));
@@ -172,7 +178,7 @@ class App {
 
     runCitizenProjectCreation() {
         System.import('pages/citizen_project_creation').catch((error) => { throw error; }).then((module) => {
-            module.default(this.get('api'));
+            module.default();
         });
     }
 }
