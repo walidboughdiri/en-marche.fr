@@ -115,6 +115,9 @@ class ReportTest extends TestCase
             $this->createMock(Adherent::class),
             $reasons,
             $comment
-        ) extends Report {};
+        ) extends Report
+        {
+            // CS needed for Style CI
+        };
     }
 }

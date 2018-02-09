@@ -15,7 +15,7 @@ class ReportRuntime
         $this->urlGenerator = $urlGenerator;
     }
 
-    public function generateReportPath(ReportableInterface $subject, string $redirectUrl)
+    public function generateReportPath(ReportableInterface $subject, string $redirectUrl): string
     {
         return $this->urlGenerator->generate('app_report', [
             'type' => ReportType::getEntityUriType($subject),

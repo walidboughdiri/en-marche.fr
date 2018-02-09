@@ -79,7 +79,7 @@ final class ReportType
     }
 
     /*
-     * This class should not be instanciated.
+     * This class should not be instantiated.
      */
     private function __construct()
     {

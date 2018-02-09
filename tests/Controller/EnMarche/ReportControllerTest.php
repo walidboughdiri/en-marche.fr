@@ -43,7 +43,7 @@ class ReportControllerTest extends MysqlWebTestCase
         parent::tearDown();
     }
 
-    public function provideReportableSubject()
+    public function provideReportableSubject(): iterable
     {
         yield 'Citizen action' => [
             CitizenActionReport::class,

@@ -15,7 +15,7 @@ class ReportRepository extends EntityRepository
     public function findIdsByNameForClass(string $class, string $name): array
     {
         if (!is_subclass_of($class, Report::class)) {
-            throw new \InvalidArgumentException(\sprintf('The class %s should extends %s.', $class, Report::class));
+            throw new \InvalidArgumentException(\sprintf('The class %s should extend %s.', $class, Report::class));
         }
 
         $ids = $this->_em->createQueryBuilder()

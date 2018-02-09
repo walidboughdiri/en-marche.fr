@@ -64,7 +64,7 @@ class ReportAdmin extends AbstractAdmin
                 'show_filter' => true,
                 'field_type' => TextType::class,
             ])
-            ->add('subjectType', CallbackFilter::class, [
+            ->add('type', CallbackFilter::class, [
                 'label' => 'Type d\'objet signalé',
                 'show_filter' => true,
                 'field_type' => ChoiceType::class,
@@ -91,12 +91,7 @@ class ReportAdmin extends AbstractAdmin
                         return false;
                     }
 
-                    // This is a kind of hack to know which class is selected if any
-                    if ($typeClass = $this->datagrid->getValues()['subjectType']['value']) {
-                        $ids = $this->reportRepository->findIdsByNameForClass($typeClass, $value['value']);
-                    } else {
-                        $ids = $this->reportRepository->findIdsByNameForAll($value['value']);
-                    }
+                    $ids = $this->reportRepository->findIdsByNameForAll($value['value']);
 
                     if (!$ids) {
                         return true;
@@ -224,7 +219,7 @@ class ReportAdmin extends AbstractAdmin
                 'label' => 'ID',
                 'route' => ['name' => 'show'],
             ])
-            ->add('subjectType', 'trans', [
+            ->add('type', 'trans', [
                 'label' => 'Type d\'objet signalé',
                 'catalogue' => 'reports',
             ])
@@ -277,7 +272,7 @@ class ReportAdmin extends AbstractAdmin
             ->add('id', null, [
                 'label' => 'ID',
             ])
-            ->add('subjectType', 'trans', [
+            ->add('type', 'trans', [
                 'label' => 'Type d\'objet signalé',
                 'catalogue' => 'reports',
             ])
