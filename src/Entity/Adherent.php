@@ -204,6 +204,11 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
     private $tags;
 
     /**
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\ReferentTag")
+     */
+    private $referentTags;
+
+    /**
      * @ORM\Column(type="boolean", options={"default": false})
      */
     private $adherent = false;
@@ -233,7 +238,8 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         string $registeredAt = 'now',
         bool $comEmail = false,
         bool $comMobile = false,
-        ?array $tags = []
+        ?array $tags = [],
+        ?array $referentTags = []
     ) {
         $this->uuid = $uuid;
         $this->password = $password;
@@ -253,6 +259,7 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         $this->setComEmail($comEmail);
         $this->comMobile = $comMobile;
         $this->tags = new ArrayCollection($tags);
+        $this->referentTags = new ArrayCollection($referentTags);
         $this->coordinatorManagedAreas = new ArrayCollection();
     }
 
@@ -993,6 +1000,23 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
     public function removeTag(AdherentTag $adherentTag): void
     {
         $this->tags->removeElement($adherentTag);
+    }
+
+    public function getReferentTags(): Collection
+    {
+        return $this->referentTags;
+    }
+
+    public function addReferentTag(ReferentTag $referentTag): void
+    {
+        if (!$this->referentTags->contains($referentTag)) {
+            $this->referentTags->add($referentTag);
+        }
+    }
+
+    public function removeReferentTag(ReferentTag $referentTag): void
+    {
+        $this->referentTags->remove($referentTag);
     }
 
     public function getCitizenProjectCreationEmailSubscriptionRadius(): int
