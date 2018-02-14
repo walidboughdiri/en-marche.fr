@@ -399,6 +399,14 @@
             <argument />
         </service>
 
+        <service id="app.admin.referent_tag" class="AppBundle\Admin\ReferentTagAdmin">
+            <tag name="sonata.admin" manager-type="orm" label="Tags réferent" group="Système" />
+
+            <argument />
+            <argument>AppBundle\Entity\ReferentTag</argument>
+            <argument />
+        </service>
+
         <service id="app.admin.report" class="AppBundle\Admin\ReportAdmin">
             <tag name="sonata.admin" manager-type="orm" label="Signalements" group="Système" />
 
