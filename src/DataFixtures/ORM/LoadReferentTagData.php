@@ -43,6 +43,8 @@ class LoadReferentTagData extends Fixture
         // Country tags
         $this->createReferentTag($manager, 'CH');
         $this->createReferentTag($manager, 'DE');
+        $this->createReferentTag($manager, 'SG');
+        $this->createReferentTag($manager, 'US');
 
         $manager->flush();
     }
