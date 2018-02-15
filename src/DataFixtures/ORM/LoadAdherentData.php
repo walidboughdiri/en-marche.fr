@@ -197,7 +197,16 @@ class LoadAdherentData extends AbstractFixture implements FixtureInterface, Cont
             'phone' => '33 673654349',
             'registered_at' => '2017-01-25 19:31:45',
         ]);
-        $referent->setReferent(['CH', '92', '77', '13'], -1.6743, 48.112);
+        $referent->setReferent(
+            [
+                $this->getReference('referent_tag_ch'),
+                $this->getReference('referent_tag_92'),
+                $this->getReference('referent_tag_77'),
+                $this->getReference('referent_tag_13'),
+            ],
+            -1.6743,
+            48.112
+        );
         $roles = new ArrayCollection();
         $roles->add($this->getReference('referent'));
         $referent->setBoardMember(BoardMember::AREA_FRANCE_METROPOLITAN, $roles);
