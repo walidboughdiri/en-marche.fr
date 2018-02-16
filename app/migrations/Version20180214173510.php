@@ -9,7 +9,7 @@ class Version20180214173510 extends AbstractMigration
 {
     public function up(Schema $schema)
     {
-        $this->addSql('CREATE TABLE referent_tags (id INT UNSIGNED AUTO_INCREMENT NOT NULL, name VARCHAR(100) NOT NULL, UNIQUE INDEX referent_tag_name_unique (name), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE referent_tags (id INT UNSIGNED AUTO_INCREMENT NOT NULL, name VARCHAR(100) NOT NULL, code VARCHAR(100) NOT NULL, UNIQUE INDEX referent_tag_name_unique (name), UNIQUE INDEX referent_tag_code_unique (code), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
         $this->addSql('CREATE TABLE referent_managed_areas (id INT AUTO_INCREMENT NOT NULL, marker_latitude FLOAT (10,6) DEFAULT NULL COMMENT \'(DC2Type:geo_point)\', marker_longitude FLOAT (10,6) DEFAULT NULL COMMENT \'(DC2Type:geo_point)\', PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
         $this->addSql('CREATE TABLE referent_managed_areas_tags (referent_managed_area_id INT NOT NULL, referent_tag_id INT UNSIGNED NOT NULL, INDEX IDX_8BE84DD56B99CC25 (referent_managed_area_id), INDEX IDX_8BE84DD59C262DB3 (referent_tag_id), PRIMARY KEY(referent_managed_area_id, referent_tag_id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
         $this->addSql('CREATE TABLE adherent_referent_tag (adherent_id INT UNSIGNED NOT NULL, referent_tag_id INT UNSIGNED NOT NULL, INDEX IDX_79E8AFFD25F06C53 (adherent_id), INDEX IDX_79E8AFFD9C262DB3 (referent_tag_id), PRIMARY KEY(adherent_id, referent_tag_id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
