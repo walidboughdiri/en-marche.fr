@@ -294,7 +294,7 @@ class AdherentAdmin extends AbstractAdmin
                     }
 
                     $qb->andWhere(sprintf('LOWER(%s.postAddress.cityName)', $alias).' LIKE :cityName');
-                    $qb->setParameter('cityName', '%'.strtolower($value['value']).'%');
+                    $qb->setParameter('cityName', '%'.mb_strtolower($value['value']).'%');
 
                     return true;
                 },
@@ -311,7 +311,7 @@ class AdherentAdmin extends AbstractAdmin
                     }
 
                     $qb->andWhere(sprintf('LOWER(%s.postAddress.country)', $alias).' = :country');
-                    $qb->setParameter('country', strtolower($value['value']));
+                    $qb->setParameter('country', mb_strtolower($value['value']));
 
                     return true;
                 },
@@ -366,7 +366,7 @@ class AdherentAdmin extends AbstractAdmin
                         return;
                     }
 
-                    $value = array_map('trim', explode(',', strtolower($value['value'])));
+                    $value = array_map('trim', explode(',', mb_strtolower($value['value'])));
                     $qb->leftJoin(sprintf('%s.tags', $alias), 't');
                     $qb->andWhere($qb->expr()->in('LOWER(t.name)', $value));
 
@@ -380,7 +380,7 @@ class AdherentAdmin extends AbstractAdmin
                         return false;
                     }
 
-                    $value = array_map('trim', explode(',', strtolower($value['value'])));
+                    $value = array_map('trim', explode(',', mb_strtolower($value['value'])));
                     $qb->leftJoin("$alias.referentTags", 'referent_tag');
                     $qb->andWhere($qb->expr()->in('LOWER(referent_tag.name)', $value));
 
@@ -394,7 +394,7 @@ class AdherentAdmin extends AbstractAdmin
                         return false;
                     }
 
-                    $value = array_map('trim', explode(',', strtolower($value['value'])));
+                    $value = array_map('trim', explode(',', mb_strtolower($value['value'])));
                     $qb->leftJoin("$alias.managedArea", 'managed_area');
                     $qb->leftJoin('managed_area.tags', 'managed_area_tag');
                     $qb->andWhere($qb->expr()->in('LOWER(managed_area_tag.name)', $value));
