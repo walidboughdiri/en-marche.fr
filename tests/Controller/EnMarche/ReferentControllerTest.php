@@ -14,13 +14,13 @@ use AppBundle\Repository\ReferentManagedUsersMessageRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\AppBundle\Controller\ControllerTestTrait;
-use Tests\AppBundle\SqliteWebTestCase;
+use Tests\AppBundle\MysqlWebTestCase;
 
 /**
  * @group functional
  * @group referent
  */
-class ReferentControllerTest extends SqliteWebTestCase
+class ReferentControllerTest extends MysqlWebTestCase
 {
     use ControllerTestTrait;
 
@@ -89,7 +89,7 @@ class ReferentControllerTest extends SqliteWebTestCase
 
         $data = [];
         $data['committee_event']['name'] = 'premier événement';
-        $data['committee_event']['category'] = 4;
+        $data['committee_event']['category'] = $this->getEventCategoryIdForName('Événement innovant');
         $data['committee_event']['beginAt']['date']['day'] = 14;
         $data['committee_event']['beginAt']['date']['month'] = 6;
         $data['committee_event']['beginAt']['date']['year'] = date('Y');

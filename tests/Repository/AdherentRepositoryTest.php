@@ -81,7 +81,7 @@ class AdherentRepositoryTest extends SqliteWebTestCase
         $this->assertSameSize($results, $boardMembers);
 
         foreach ($boardMembers as $key => $adherent) {
-            $this->assertSame($results[$key], $adherent->getEmailAddress());
+            $this->assertContains($adherent->getEmailAddress(), $results);
         }
     }
 
@@ -99,7 +99,7 @@ class AdherentRepositoryTest extends SqliteWebTestCase
         $this->assertSameSize($results, $boardMembers);
 
         foreach ($boardMembers as $key => $adherent) {
-            $this->assertSame($results[$key], $adherent->getEmailAddress());
+            $this->assertContains($adherent->getEmailAddress(), $results);
         }
     }
 
