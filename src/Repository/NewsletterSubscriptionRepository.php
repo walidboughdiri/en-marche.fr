@@ -17,10 +17,15 @@ class NewsletterSubscriptionRepository extends EntityRepository
      */
     public function findAllManagedBy(Adherent $referent)
     {
+        if (!$referent->isReferent()) {
+            return [];
+        }
+
         $hasFranceManagedArea = false;
-        foreach ($referent->getManagedArea()->getCodes() as $key => $code) {
-            if (is_numeric($code)) {
+        foreach ($referent->getManagedArea()->getTags() as $key => $tag) {
+            if (is_numeric($tag->getName())) {
                 $hasFranceManagedArea = true;
+                break;
             }
         }
 
@@ -38,8 +43,8 @@ class NewsletterSubscriptionRepository extends EntityRepository
 
         $codesFilter = $qb->expr()->orX();
 
-        foreach ($referent->getManagedArea()->getCodes() as $key => $code) {
-            if (is_numeric($code)) {
+        foreach ($referent->getManagedArea()->getTags() as $key => $tag) {
+            if (is_numeric($code = $tag->getName())) {
                 // Postal code prefix
                 $codesFilter->add($qb->expr()->like('n.postalCode', ':code'.$key));
                 $qb->setParameter('code'.$key, $code.'%');

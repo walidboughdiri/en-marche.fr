@@ -148,6 +148,10 @@ class CommitteeRepository extends EntityRepository
 
     public function findManagedBy(Adherent $referent)
     {
+        if (!$referent->isReferent()) {
+            return [];
+        }
+
         $qb = $this->createQueryBuilder('c')
             ->select('c')
             ->where('c.status = :status')
@@ -158,7 +162,9 @@ class CommitteeRepository extends EntityRepository
 
         $codesFilter = $qb->expr()->orX();
 
-        foreach ($referent->getManagedArea()->getCodes() as $key => $code) {
+        foreach ($referent->getManagedArea()->getTags() as $key => $tag) {
+            $code = $tag->getName();
+
             if (is_numeric($code)) {
                 // Postal code prefix
                 $codesFilter->add(
