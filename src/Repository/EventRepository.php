@@ -124,6 +124,10 @@ class EventRepository extends EntityRepository
      */
     public function findManagedBy(Adherent $referent): array
     {
+        if (!$referent->isReferent()) {
+            return [];
+        }
+
         $qb = $this->createQueryBuilder('e')
             ->select('e', 'a', 'c', 'o')
             ->leftJoin('e.category', 'a')
@@ -137,7 +141,9 @@ class EventRepository extends EntityRepository
 
         $codesFilter = $qb->expr()->orX();
 
-        foreach ($referent->getManagedArea()->getCodes() as $key => $code) {
+        foreach ($referent->getManagedArea()->getTags() as $key => $tag) {
+            $code = $tag->getName();
+
             if (is_numeric($code)) {
                 // Postal code prefix
                 $codesFilter->add(
@@ -316,9 +322,6 @@ committees.address_longitude AS committee_address_longitude, adherents.uuid AS a
 adherents.email_address AS adherent_email_address, adherents.password AS adherent_password, adherents.old_password AS adherent_old_password, 
 adherents.gender AS adherent_gender, adherents.first_name AS adherent_first_name, 
 adherents.last_name AS adherent_last_name, adherents.birthdate AS adherent_birthdate, 
-adherents.managed_area_codes AS adherent_managed_area_codes, 
-adherents.managed_area_marker_latitude AS adherent_managed_area_marker_latitude, 
-adherents.managed_area_marker_longitude AS adherent_managed_area_marker_longitude, 
 adherents.address_address AS adherent_address_address, adherents.address_country AS adherent_address_country, 
 adherents.address_city_name AS adherent_address_city_name, adherents.address_city_insee AS adherent_address_city_insee, 
 adherents.address_postal_code AS adherent_address_postal_code, adherents.address_latitude AS adherent_address_latitude, 
