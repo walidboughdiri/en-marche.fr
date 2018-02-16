@@ -17,6 +17,7 @@ class Version20180214173510 extends AbstractMigration
         $this->addSql('ALTER TABLE referent_managed_areas_tags ADD CONSTRAINT FK_8BE84DD59C262DB3 FOREIGN KEY (referent_tag_id) REFERENCES referent_tags (id)');
         $this->addSql('ALTER TABLE adherent_referent_tag ADD CONSTRAINT FK_79E8AFFD25F06C53 FOREIGN KEY (adherent_id) REFERENCES adherents (id) ON DELETE CASCADE');
         $this->addSql('ALTER TABLE adherent_referent_tag ADD CONSTRAINT FK_79E8AFFD9C262DB3 FOREIGN KEY (referent_tag_id) REFERENCES referent_tags (id) ON DELETE CASCADE');
+        $this->addSql('ALTER TABLE projection_referent_managed_users ADD subscribed_tags LONGTEXT DEFAULT NULL');
         $this->addSql('ALTER TABLE adherents ADD managed_area_id INT DEFAULT NULL, DROP managed_area_codes, DROP managed_area_marker_latitude, DROP managed_area_marker_longitude');
         $this->addSql('ALTER TABLE adherents ADD CONSTRAINT FK_562C7DA3DC184E71 FOREIGN KEY (managed_area_id) REFERENCES referent_managed_areas (id)');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_562C7DA3DC184E71 ON adherents (managed_area_id)');
@@ -34,5 +35,6 @@ class Version20180214173510 extends AbstractMigration
         $this->addSql('DROP TABLE adherent_referent_tag');
         $this->addSql('DROP INDEX UNIQ_562C7DA3DC184E71 ON adherents');
         $this->addSql('ALTER TABLE adherents ADD managed_area_codes LONGTEXT DEFAULT NULL COLLATE utf8_unicode_ci COMMENT \'(DC2Type:simple_array)\', ADD managed_area_marker_latitude FLOAT (10,6) DEFAULT NULL COMMENT \'(DC2Type:geo_point)\', ADD managed_area_marker_longitude FLOAT (10,6) DEFAULT NULL COMMENT \'(DC2Type:geo_point)\', DROP managed_area_id');
+        $this->addSql('ALTER TABLE projection_referent_managed_users DROP subscribed_tags');
     }
 }
