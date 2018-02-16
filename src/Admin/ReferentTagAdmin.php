@@ -23,6 +23,9 @@ class ReferentTagAdmin extends AbstractAdmin
             ->add('name', null, [
                 'label' => 'Nom',
             ])
+            ->add('code', null, [
+                'label' => 'Code',
+            ])
         ;
     }
 
@@ -32,6 +35,10 @@ class ReferentTagAdmin extends AbstractAdmin
             ->add('name', TextType::class, [
                 'label' => 'Nom',
             ])
+            ->add('code', TextType::class, [
+                'label' => 'Code',
+                'help' => 'Ne doit contenir que des lettres, chiffres et tirets (-).',
+            ])
         ;
     }
 
@@ -40,6 +47,9 @@ class ReferentTagAdmin extends AbstractAdmin
         $listMapper
             ->add('name', null, [
                 'label' => 'Nom',
+            ])
+            ->add('code', null, [
+                'label' => 'Code',
             ])
             ->add('_action', null, [
                 'virtual_field' => true,
