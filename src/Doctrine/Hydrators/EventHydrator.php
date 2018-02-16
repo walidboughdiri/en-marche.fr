@@ -7,7 +7,6 @@ use AppBundle\Entity\Committee;
 use AppBundle\Entity\Event;
 use AppBundle\Entity\EventCategory;
 use AppBundle\Entity\PostAddress;
-use AppBundle\Entity\ReferentTag;
 use Doctrine\ORM\Internal\Hydration\AbstractHydrator;
 use Ramsey\Uuid\Uuid;
 
