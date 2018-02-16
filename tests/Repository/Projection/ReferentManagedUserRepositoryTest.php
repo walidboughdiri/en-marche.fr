@@ -35,8 +35,8 @@ class ReferentManagedUserRepositoryTest extends MysqlWebTestCase
         $referent = $this->createAdherent('referent@en-marche-dev.fr');
         $referent->setReferent(
             [
-                $this->referentTagRepository->findOneBy(['name' => 'CH']),
-                $this->referentTagRepository->findOneBy(['name' => '77']),
+                $this->referentTagRepository->findOneBy(['code' => 'ch']),
+                $this->referentTagRepository->findOneBy(['code' => '77']),
             ],
             '1.123456',
             '2.34567'
@@ -63,8 +63,8 @@ class ReferentManagedUserRepositoryTest extends MysqlWebTestCase
         $referent = $this->createAdherent('referent@en-marche-dev.fr');
         $referent->setReferent(
             [
-                $this->referentTagRepository->findOneBy(['name' => '92']),
-                $this->referentTagRepository->findOneBy(['name' => '77']),
+                $this->referentTagRepository->findOneBy(['code' => '92']),
+                $this->referentTagRepository->findOneBy(['code' => '77']),
             ],
             '1.123456',
             '2.34567'
@@ -88,8 +88,8 @@ class ReferentManagedUserRepositoryTest extends MysqlWebTestCase
         $referent = $this->createAdherent('referent@en-marche-dev.fr');
         $referent->setReferent(
             [
-                $this->referentTagRepository->findOneBy(['name' => '92']),
-                $this->referentTagRepository->findOneBy(['name' => '77']),
+                $this->referentTagRepository->findOneBy(['code' => '92']),
+                $this->referentTagRepository->findOneBy(['code' => '77']),
             ],
             '1.123456',
             '2.34567'

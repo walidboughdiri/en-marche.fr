@@ -57,7 +57,7 @@ class ReferentManagedUserRepository extends EntityRepository
 
         foreach ($referent->getManagedArea()->getTags() as $key => $tag) {
             $tagsFilter->add("FIND_IN_SET(:tag_$key, u.subscribedTags) > 0");
-            $qb->setParameter("tag_$key", $tag->getName());
+            $qb->setParameter("tag_$key", $tag->getCode());
         }
 
         $qb->andWhere($tagsFilter);
