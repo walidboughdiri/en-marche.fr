@@ -17,8 +17,8 @@ class LoadReferentTagData extends Fixture
             switch ($department) {
                 // 2 separate tags for Corsica
                 case '20':
-                    $this->createReferentTag($manager, '2A');
-                    $this->createReferentTag($manager, '2B');
+                    $this->createReferentTag($manager, 'Département 2A', '2a');
+                    $this->createReferentTag($manager, 'Département 2B', '2b');
 
                     break;
                 // 1 tag for each Paris district
@@ -26,7 +26,7 @@ class LoadReferentTagData extends Fixture
                     foreach (\range(1, 20) as $district) {
                         $district = \str_pad($district, 2, '0', STR_PAD_LEFT);
 
-                        $this->createReferentTag($manager, "750$district");
+                        $this->createReferentTag($manager, "750$district", "750$district");
                     }
 
                     break;
@@ -34,27 +34,27 @@ class LoadReferentTagData extends Fixture
                 case '96':
                     break;
                 default:
-                    $this->createReferentTag($manager, $department);
+                    $this->createReferentTag($manager, "Département $department", $department);
 
                     break;
             }
         }
 
         // Country tags
-        $this->createReferentTag($manager, 'CH');
-        $this->createReferentTag($manager, 'DE');
-        $this->createReferentTag($manager, 'SG');
-        $this->createReferentTag($manager, 'US');
+        $this->createReferentTag($manager, 'Suisse', 'ch');
+        $this->createReferentTag($manager, 'Allemagne', 'de');
+        $this->createReferentTag($manager, 'Singapour', 'sg');
+        $this->createReferentTag($manager, 'États-Unis', 'us');
 
         $manager->flush();
     }
 
-    private function createReferentTag(ObjectManager $manager, string $name): void
+    private function createReferentTag(ObjectManager $manager, string $name, string $code): void
     {
-        $referentTag = new ReferentTag($name);
+        $referentTag = new ReferentTag($name, $code);
 
         $manager->persist($referentTag);
 
-        $this->addReference('referent_tag_'.\strtolower($name), $referentTag);
+        $this->addReference('referent_tag_'.\mb_strtolower($code), $referentTag);
     }
 }
