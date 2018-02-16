@@ -769,13 +769,26 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
             && !$this->managedArea->getTags()->isEmpty();
     }
 
+    public function revokeReferent(): void
+    {
+        $this->managedArea = null;
+    }
+
     public function getManagedAreaMarkerLatitude(): ?string
     {
+        if (!$this->managedArea) {
+            return '';
+        }
+
         return $this->managedArea->getMarkerLatitude();
     }
 
     public function getManagedAreaMarkerLongitude(): ?string
     {
+        if (!$this->managedArea) {
+            return '';
+        }
+
         return $this->managedArea->getMarkerLongitude();
     }
 
