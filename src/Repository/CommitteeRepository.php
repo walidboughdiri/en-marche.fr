@@ -15,6 +15,7 @@ use Ramsey\Uuid\UuidInterface;
 
 class CommitteeRepository extends EntityRepository
 {
+    use GeoFilterTrait;
     use NearbyTrait;
     use UuidEntityRepositoryTrait {
         findOneByUuid as findOneByValidUuid;
@@ -146,7 +147,7 @@ class CommitteeRepository extends EntityRepository
         return new CommitteeCollection($qb->getQuery()->getResult());
     }
 
-    public function findManagedBy(Adherent $referent)
+    public function findManagedBy(Adherent $referent): array
     {
         if (!$referent->isReferent()) {
             return [];
@@ -160,29 +161,7 @@ class CommitteeRepository extends EntityRepository
             ->orderBy('c.createdAt', 'DESC')
         ;
 
-        $codesFilter = $qb->expr()->orX();
-
-        foreach ($referent->getManagedArea()->getTags() as $key => $tag) {
-            $code = $tag->getName();
-
-            if (is_numeric($code)) {
-                // Postal code prefix
-                $codesFilter->add(
-                    $qb->expr()->andX(
-                        'c.postAddress.country = \'FR\'',
-                        $qb->expr()->like('c.postAddress.postalCode', ':code'.$key)
-                    )
-                );
-
-                $qb->setParameter('code'.$key, $code.'%');
-            } else {
-                // Country
-                $codesFilter->add($qb->expr()->eq('c.postAddress.country', ':code'.$key));
-                $qb->setParameter('code'.$key, $code);
-            }
-        }
-
-        $qb->andWhere($codesFilter);
+        $this->applyReferentGeoFilter($qb, $referent, 'c');
 
         return $qb->getQuery()->getResult();
     }

@@ -19,6 +19,7 @@ class EventRepository extends EntityRepository
     const TYPE_UPCOMING = 'upcoming';
     const TYPE_ALL = 'all';
 
+    use GeoFilterTrait;
     use NearbyTrait;
     use UuidEntityRepositoryTrait {
         findOneByUuid as findOneByValidUuid;
@@ -139,29 +140,7 @@ class EventRepository extends EntityRepository
             ->setParameter('published', true)
         ;
 
-        $codesFilter = $qb->expr()->orX();
-
-        foreach ($referent->getManagedArea()->getTags() as $key => $tag) {
-            $code = $tag->getName();
-
-            if (is_numeric($code)) {
-                // Postal code prefix
-                $codesFilter->add(
-                    $qb->expr()->andX(
-                        'e.postAddress.country = \'FR\'',
-                        $qb->expr()->like('e.postAddress.postalCode', ':code'.$key)
-                    )
-                );
-
-                $qb->setParameter('code'.$key, $code.'%');
-            } else {
-                // Country
-                $codesFilter->add($qb->expr()->eq('e.postAddress.country', ':code'.$key));
-                $qb->setParameter('code'.$key, $code);
-            }
-        }
-
-        $qb->andWhere($codesFilter);
+        $this->applyReferentGeoFilter($qb, $referent, 'e');
 
         return $qb->getQuery()->getResult();
     }
