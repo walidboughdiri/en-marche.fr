@@ -376,6 +376,22 @@ class ReferentControllerTest extends MysqlWebTestCase
         ];
     }
 
+    /**
+     * @return string Date in the format "Jeudi 14 juin 2018, 9h00"
+     */
+    private function formatEventDate(\DateTime $date): string
+    {
+        $formatter = new \IntlDateFormatter(
+            'fr_FR',
+            \IntlDateFormatter::NONE,
+            \IntlDateFormatter::NONE,
+            null,
+            \IntlDateFormatter::GREGORIAN,
+            'EEEE d LLLL Y, H');
+
+        return ucfirst(strtolower($formatter->format($date).'h00'));
+    }
+
     protected function setUp()
     {
         parent::setUp();
