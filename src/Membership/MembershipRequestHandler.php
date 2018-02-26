@@ -11,6 +11,7 @@ use AppBundle\Mailer\Message\AdherentAccountActivationMessage;
 use AppBundle\Mailer\Message\AdherentAccountConfirmationMessage;
 use AppBundle\Mailer\Message\AdherentTerminateMembershipMessage;
 use AppBundle\OAuth\CallbackManager;
+use AppBundle\Referent\ReferentTagManager;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -25,6 +26,7 @@ class MembershipRequestHandler
     private $manager;
     private $adherentManager;
     private $committeeManager;
+    private $referentTagManager;
 
     public function __construct(
         EventDispatcherInterface $dispatcher,
@@ -35,7 +37,8 @@ class MembershipRequestHandler
         ObjectManager $manager,
         AdherentRegistry $adherentRegistry,
         AdherentManager $adherentManager,
-        CommitteeManager $committeeManager
+        CommitteeManager $committeeManager,
+        ReferentTagManager $referentTagManager
     ) {
         $this->adherentFactory = $adherentFactory;
         $this->addressFactory = $addressFactory;
@@ -46,6 +49,7 @@ class MembershipRequestHandler
         $this->adherentRegistry = $adherentRegistry;
         $this->adherentManager = $adherentManager;
         $this->committeeManager = $committeeManager;
+        $this->referentTagManager = $referentTagManager;
     }
 
     public function handle(MembershipRequest $membershipRequest)
@@ -67,6 +71,9 @@ class MembershipRequestHandler
     {
         $user->updateMembership($membershipRequest, $this->addressFactory->createFromAddress($membershipRequest->getAddress()));
         $user->join();
+
+        $this->referentTagManager->assignAdherentLocalTag($user);
+
         $this->manager->flush();
 
         $this->mailer->sendMessage(AdherentAccountConfirmationMessage::createFromAdherent(
@@ -82,6 +89,8 @@ class MembershipRequestHandler
     public function update(Adherent $adherent, MembershipRequest $membershipRequest)
     {
         $adherent->updateMembership($membershipRequest, $this->addressFactory->createFromAddress($membershipRequest->getAddress()));
+
+        $this->referentTagManager->assignAdherentLocalTag($adherent);
 
         $this->dispatcher->dispatch(AdherentEvents::PROFILE_UPDATED, new AdherentProfileWasUpdatedEvent($adherent));
         $this->dispatcher->dispatch(UserEvents::USER_UPDATED, new UserEvent($adherent));

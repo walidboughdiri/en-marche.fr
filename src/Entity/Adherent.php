@@ -1025,6 +1025,11 @@ class Adherent implements UserInterface, GeoPointInterface, EncoderAwareInterfac
         $this->referentTags->remove($referentTag);
     }
 
+    public function removeReferentTags(): void
+    {
+        $this->referentTags = new ArrayCollection();
+    }
+
     public function getCitizenProjectCreationEmailSubscriptionRadius(): int
     {
         return $this->citizenProjectCreationEmailSubscriptionRadius;

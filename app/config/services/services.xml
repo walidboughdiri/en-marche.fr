@@ -84,6 +84,9 @@
         <service id="AppBundle\Procuration\ProcurationRequestSerializer" />
         <service id="AppBundle\Procuration\ProcurationSession" />
 
+        <!-- Referent -->
+        <service id="AppBundle\Referent\ReferentTagManager" />
+
         <!-- Report -->
         <service id="AppBundle\Report\ReportManager" />
         <service id="AppBundle\Form\ReportCommandType"/>
