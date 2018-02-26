@@ -4,8 +4,10 @@ Feature:
   I can register
 
   Scenario: I can register as a user
-    Given I am on "/inscription"
-    When I fill in the following:
+    Given the following fixtures are loaded:
+      | LoadReferentTagData |
+    When I am on "/inscription"
+    And I fill in the following:
       | Prénom             | Jean-Pierre |
       | Nom                | DURAND      |
       | E-mail             | jp@test.com |
@@ -77,6 +79,7 @@ Feature:
       | become_adherent[address][address]    | 1 rue de l'egalite |
       | become_adherent[address][cityName]   | Nice               |
       | become_adherent[address][postalCode] | 06000              |
+      | become_adherent[address][country]    | FR                 |
       | become_adherent[gender]              | male               |
       | become_adherent[phone][country]      | FR                 |
       | become_adherent[phone][number]       | 0600000000         |
@@ -87,6 +90,7 @@ Feature:
     When I press "J'adhère"
     Then I should be on "/espace-adherent/accueil"
     And I should see "Votre compte adhérent est maintenant actif."
+    And the adherent "jp@test.com" should have the "06" referent tag
     And I should have 1 email "AdherentAccountConfirmationMessage" for "jp@test.com" with payload:
     """
     {
@@ -116,7 +120,7 @@ Feature:
     Given I follow "Mes informations personnelles"
     Then I should be on "/parametres/mon-compte/modifier"
     And the "adherent[address][address]" field should contain "1 rue de l'egalite"
-    And the "adherent[address][country]" field should contain "CH"
+    And the "adherent[address][country]" field should contain "FR"
     And the "adherent[phone][country]" field should contain "FR"
     And the "adherent[phone][number]" field should contain "06 00 00 00 00"
     And the "adherent[birthdate][day]" field should contain "1"
@@ -136,10 +140,12 @@ Feature:
 
   Scenario: I can become adherent with a foreign country
     Given the following fixtures are loaded:
-      | LoadUserData |
+      | LoadUserData        |
+      | LoadReferentTagData |
     And I am logged as "simple-user@example.ch"
     And I am on "/adhesion"
     And I fill in the following:
+      | become_adherent[address][country]    | CH                 |
       | become_adherent[address][address]    | 32 Zeppelinstrasse |
       | become_adherent[address][postalCode] | 8057               |
       | become_adherent[gender]              | male               |
@@ -155,11 +161,13 @@ Feature:
       | become_adherent[address][cityName] | Zürich |
     When I press "J'adhère"
     Then I should be on "/espace-adherent/accueil"
+    And the adherent "simple-user@example.ch" should have the "CH" referent tag
     And I should see "Votre compte adhérent est maintenant actif."
 
   Scenario: I can become adherent with a french address
     Given the following fixtures are loaded:
-      | LoadUserData |
+      | LoadUserData        |
+      | LoadReferentTagData |
     And I am logged as "simple-user@example.ch"
     And I am on "/adhesion"
     And I fill in the following:
@@ -175,12 +183,14 @@ Feature:
     Then I should see "Veuillez renseigner une ville."
 
     Given I fill in the following:
+      | become_adherent[address][country]    | FR       |
       | become_adherent[address][postalCode] | 69001    |
       | become_adherent[address][cityName]   | Lyon 1er |
     And I fill in hidden field "become_adherent_address_city" with "69001-6088"
     When I press "J'adhère"
     Then I should be on "/espace-adherent/accueil"
     And I should see "Votre compte adhérent est maintenant actif."
+    And the adherent "simple-user@example.ch" should have the "69" referent tag
 
   Scenario: I have great error message when register is misfiled
     Given I am on "/inscription"

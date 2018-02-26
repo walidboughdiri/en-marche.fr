@@ -7,8 +7,6 @@ use AppBundle\Repository\ReferentTagRepository;
 
 class ReferentTagManager
 {
-    private const DEFAULT_LOCAL_CODE = 'undefined';
-
     private $referentTagRepository;
 
     public function __construct(ReferentTagRepository $referentTagRepository)
@@ -18,13 +16,14 @@ class ReferentTagManager
 
     public function assignAdherentLocalTag(Adherent $adherent): void
     {
+        $adherent->removeReferentTags();
+
         $code = ManagedAreaUtils::getCodeFromAdherent($adherent);
 
         if (!$tag = $this->referentTagRepository->findOneByCode($code)) {
-            $tag = $this->referentTagRepository->findOneByCode(self::DEFAULT_LOCAL_CODE);
+            return;
         }
 
-        $adherent->removeReferentTags();
         $adherent->addReferentTag($tag);
     }
 }

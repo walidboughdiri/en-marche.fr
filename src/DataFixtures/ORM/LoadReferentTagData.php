@@ -3,6 +3,7 @@
 namespace AppBundle\DataFixtures\ORM;
 
 use AppBundle\Entity\ReferentTag;
+use AppBundle\Intl\UnitedNationsBundle;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 
@@ -40,11 +41,9 @@ class LoadReferentTagData extends Fixture
             }
         }
 
-        // Country tags
-        $this->createReferentTag($manager, 'Suisse', 'ch');
-        $this->createReferentTag($manager, 'Allemagne', 'de');
-        $this->createReferentTag($manager, 'Singapour', 'sg');
-        $this->createReferentTag($manager, 'États-Unis', 'us');
+        foreach (UnitedNationsBundle::getCountries() as $countryCode => $countryName) {
+            $this->createReferentTag($manager, $countryName, $countryCode);
+        }
 
         $manager->flush();
     }
