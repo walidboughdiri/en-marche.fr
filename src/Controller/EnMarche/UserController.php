@@ -2,6 +2,8 @@
 
 namespace AppBundle\Controller\EnMarche;
 
+use AppBundle\Entity\Adherent;
+use AppBundle\Entity\Donation;
 use AppBundle\Entity\Unregistration;
 use AppBundle\Form\AdherentChangePasswordType;
 use AppBundle\Form\AdherentEmailSubscriptionType;
@@ -27,11 +29,28 @@ class UserController extends Controller
 
     /**
      * @Route("", name="app_user_profile")
-     * @Method("GET|POST")
+     * @Method("GET")
      */
     public function profileOverviewAction(): Response
     {
         return $this->render('user/my_account.html.twig');
+    }
+
+    /**
+     * @Route("/mes-dons", name="app_user_profile_donation")
+     * @Method("GET")
+     */
+    public function profileDonationAction(): Response
+    {
+        $donationRepos = $this->getDoctrine()->getRepository(Donation::class);
+        /** @var Adherent $user */
+        $user = $this->getUser();
+
+        $donations = $donationRepos->findByEmailAddressOrderByDonationAt($user);
+
+        return $this->render('user/my_donation.html.twig', [
+            'donations' => $donations,
+        ]);
     }
 
     /**
