@@ -2,8 +2,6 @@
 
 namespace AppBundle\Controller\EnMarche;
 
-use AppBundle\Entity\Adherent;
-use AppBundle\Entity\Donation;
 use AppBundle\Entity\Unregistration;
 use AppBundle\Form\AdherentChangePasswordType;
 use AppBundle\Form\AdherentEmailSubscriptionType;
