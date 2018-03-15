@@ -6,6 +6,7 @@ use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use AppBundle\Geocoder\GeoPointInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use JMS\Serializer\Annotation as JMS;
 
 /**
  * @ORM\Entity
@@ -53,6 +54,9 @@ abstract class BaseEvent implements GeoPointInterface
      * @ORM\Column(length=100)
      *
      * @Algolia\Attribute
+     *
+     * @JMS\Groups({"public"})
+     * @JMS\SerializedName("name")
      */
     protected $name;
 
@@ -74,6 +78,9 @@ abstract class BaseEvent implements GeoPointInterface
      * @Gedmo\Slug(fields={"beginAt", "canonicalName"}, dateFormat="Y-m-d")
      *
      * @Algolia\Attribute
+     *
+     * @JMS\Groups({"public"})
+     * @JMS\SerializedName("slug")
      */
     protected $slug;
 
@@ -83,6 +90,9 @@ abstract class BaseEvent implements GeoPointInterface
      * @ORM\Column(type="text")
      *
      * @Algolia\Attribute
+     *
+     * @JMS\Groups({"public"})
+     * @JMS\SerializedName("description")
      */
     protected $description;
 
@@ -90,6 +100,9 @@ abstract class BaseEvent implements GeoPointInterface
      * @var \DateTimeInterface|null
      *
      * @ORM\Column(type="datetime")
+     *
+     * @JMS\Groups({"public"})
+     * @JMS\SerializedName("beginAt")
      */
     protected $beginAt;
 
@@ -97,6 +110,9 @@ abstract class BaseEvent implements GeoPointInterface
      * @var \DateTimeInterface|null
      *
      * @ORM\Column(type="datetime")
+     *
+     * @JMS\Groups({"public"})
+     * @JMS\SerializedName("finishAt")
      */
     protected $finishAt;
 
@@ -105,6 +121,9 @@ abstract class BaseEvent implements GeoPointInterface
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Adherent")
      * @ORM\JoinColumn(onDelete="RESTRICT")
+     *
+     * @JMS\Groups({"public"})
+     * @JMS\SerializedName("organizer")
      */
     protected $organizer;
 
@@ -133,6 +152,9 @@ abstract class BaseEvent implements GeoPointInterface
      * @var int|null
      *
      * @ORM\Column(type="integer", nullable=true)
+     *
+     * @JMS\Groups({"public"})
+     * @JMS\SerializedName("capacity")
      */
     protected $capacity;
 
@@ -340,5 +362,15 @@ abstract class BaseEvent implements GeoPointInterface
     public function equals(self $other): bool
     {
         return $this->uuid->equals($other->uuid);
+    }
+
+    /**
+     * @JMS\VirtualProperty
+     * @JMS\SerializedName("uuid"),
+     * @JMS\Groups({"public"})
+     */
+    public function getUuidAsString(): string
+    {
+        return $this->getUuid()->toString();
     }
 }

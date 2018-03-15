@@ -6,6 +6,7 @@ use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use AppBundle\Geocoder\GeoPointInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use JMS\Serializer\Annotation as JMS;
 use libphonenumber\PhoneNumber;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
@@ -31,6 +32,9 @@ abstract class BaseGroup implements GeoPointInterface
      * @ORM\Column
      *
      * @Algolia\Attribute
+     *
+     * @JMS\Groups({"public"})
+     * @JMS\SerializedName("name")
      */
     protected $name;
 
@@ -51,6 +55,9 @@ abstract class BaseGroup implements GeoPointInterface
      * @Gedmo\Slug(fields={"canonicalName"})
      *
      * @Algolia\Attribute
+     *
+     * @JMS\Groups({"public"})
+     * @JMS\SerializedName("slug")
      */
     protected $slug;
 
@@ -79,6 +86,9 @@ abstract class BaseGroup implements GeoPointInterface
      * The adherent UUID who created this group.
      *
      * @ORM\Column(type="uuid", nullable=true)
+     *
+     * @JMS\Groups({"public"})
+     * @JMS\SerializedName("createdBy")
      */
     protected $createdBy;
 

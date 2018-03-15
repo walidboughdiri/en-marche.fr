@@ -6,6 +6,7 @@ use Algolia\AlgoliaSearchBundle\Mapping\Annotation as Algolia;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as JMS;
 use Ramsey\Uuid\UuidInterface;
 
 /**
@@ -21,6 +22,9 @@ class Event extends BaseEvent implements UserDocumentInterface
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\EventCategory")
      *
      * @Algolia\Attribute
+     *
+     * @JMS\Groups({"public"})
+     * @JMS\SerializedName("category")
      */
     protected $category;
 
@@ -28,9 +32,15 @@ class Event extends BaseEvent implements UserDocumentInterface
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Committee")
      *
      * @Algolia\Attribute
+     *
+     * @JMS\Groups({"public"})
+     * @JMS\SerializedName("committee")
      */
     private $committee;
 
+    /**
+     * @JMS\Exclude
+     */
     private $type;
 
     /**
@@ -137,5 +147,19 @@ class Event extends BaseEvent implements UserDocumentInterface
     public function isForLegislatives()
     {
         return $this->isForLegislatives;
+    }
+
+    /**
+     * @JMS\VirtualProperty
+     * @JMS\SerializedName("committeeUuid"),
+     * @JMS\Groups({"public"})
+     */
+    public function getCommitteeUuidAsString(): ?string
+    {
+        if (!$committee = $this->getCommittee()) {
+            return null;
+        }
+
+        return $committee->getUuid()->toString();
     }
 }
