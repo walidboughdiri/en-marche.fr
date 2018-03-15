@@ -42,7 +42,7 @@ class UserController extends Controller
     public function profileDonationAction(DonationRepository $donationRepository): Response
     {
         return $this->render('user/my_donation.html.twig', [
-            'donations' => $donationRepository->findByEmailAddressOrderedByDonationAt($this->getUser()),
+            'donations' => $donationRepository->findByEmailAddressOrderedByDonatedAt($this->getUser()->getEmailAddress()),
         ]);
     }
 

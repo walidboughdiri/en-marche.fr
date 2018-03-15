@@ -20,10 +20,10 @@ class DonationRepository extends EntityRepository
         return $this->findOneByValidUuid($uuid);
     }
 
-    public function findByEmailAddressOrderedByDonationAt(Adherent $adherent, string $order = 'ASC'): array
+    public function findByEmailAddressOrderedByDonatedAt(string $email, string $order = 'ASC'): array
     {
         return $this->findBy(
-            ['emailAddress' => $adherent->getEmailAddress()],
+            ['emailAddress' => $email],
             ['donatedAt' => $order]
         );
     }
