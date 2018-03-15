@@ -80,6 +80,7 @@ twig:
         url_help_en_marche:     "https://aide.en-marche.fr"
         project_dir:            "%kernel.project_dir%"
     form_themes:
+        - 'form_themes/adherent_email_subscription_theme.html.twig'
         - 'form_theme.html.twig'
         - 'SonataCoreBundle:Form:datepicker.html.twig'
         - 'SonataCoreBundle:Form:colorpicker.html.twig'

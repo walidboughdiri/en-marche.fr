@@ -1,0 +1,42 @@
+{#{% block adherent_email_subscription_row %}#}
+    {#{{ form_label(form) }}#}
+    {#{{ form_errors(form) }}#}
+    {#{{ form_widget(form) }}#}
+{#{% endblock %}#}
+
+{% block adherent_email_subscription_label %}
+    <h2>Notification par emails activées</h2>
+    <button type="button" class="btn--green click-all-checkbox" data-target="{{ form.emails_subscriptions.vars.id }}">Activer</button>
+    <button type="button" class="btn--error un-click-all-checkbox" data-target="{{ form.emails_subscriptions.vars.id }}">Désactiver</button>
+{% endblock %}
+
+{% block adherent_email_subscription_widget %}
+    <div id="{{ form.emails_subscriptions.vars.id }}">
+        <h3>Mails de communication</h3>
+        {%- for child in form.emails_subscriptions|slice(0,3) %}
+            {{- form_row(child) -}}
+        {% endfor -%}
+        <h3>Formation</h3>
+        {%- for child in form.emails_subscriptions|slice(3,2) %}
+            {{- form_row(child) -}}
+        {% endfor -%}
+        <h3>Donateurs</h3>
+        {%- for child in form.emails_subscriptions|slice(5,1) %}
+            {{- form_row(child) -}}
+        {% endfor -%}
+        <h3>Mails locaux</h3>
+        {%- for child in form.emails_subscriptions|slice(6) %}
+            {{- form_row(child) -}}
+        {% endfor -%}
+    </div>
+
+    {{ form_row(form.citizenProjectCreationEmailSubscriptionRadius) }}
+
+    <p>Si vous souhaitez recevoir ou non les e-mails des comités ou projets citoyens que vous suivez, assurez-vous d'en être membre ou de plus les suivre en allant directement sur leur page</p>
+
+    {% if form.submit is defined %}
+        <div class="b__nudge--top">
+            {{ form_widget(form.submit, { attr: { class: 'btn--blue' } }) }}
+        </div>
+    {% endif %}
+{% endblock %}
