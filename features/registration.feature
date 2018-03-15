@@ -67,7 +67,7 @@ Feature:
       | E-mail       | jp@test.com |
       | Mot de passe | testtest    |
     And I press "Connexion"
-    Then I should see "L'adresse e-mail et le mot de passe que vous avez saisis ne correspondent pas."
+    Then I should see "Pour vous connecter vous devez confirmer votre adhésion. Si vous n'avez pas reçu le mail de validation, vous pouvez cliquer ici pour le recevoir à nouveau."
 
     When I click on the email link "activation_link"
     Then I should be on "/espace-adherent/accueil"
@@ -118,7 +118,7 @@ Feature:
       | E-mail       | jp@test.com |
       | Mot de passe | testtest    |
     And I press "Connexion"
-    Then I should see "L'adresse e-mail et le mot de passe que vous avez saisis ne correspondent pas."
+    Then I should see "Pour vous connecter vous devez confirmer votre adhésion. Si vous n'avez pas reçu le mail de validation, vous pouvez cliquer ici pour le recevoir à nouveau."
 
     When I click on the email link "activation_link"
     Then I should be on "/adhesion"

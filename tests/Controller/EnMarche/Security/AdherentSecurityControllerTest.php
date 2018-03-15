@@ -4,6 +4,7 @@ namespace Tests\AppBundle\Controller\EnMarche\Security;
 
 use AppBundle\DataFixtures\ORM\LoadAdherentData;
 use AppBundle\DataFixtures\ORM\LoadHomeBlockData;
+use AppBundle\DataFixtures\ORM\LoadUserData;
 use AppBundle\Entity\Adherent;
 use AppBundle\Mailer\Message\AdherentResetPasswordMessage;
 use AppBundle\Mailer\Message\AdherentResetPasswordConfirmationMessage;
@@ -60,7 +61,7 @@ class AdherentSecurityControllerTest extends SqliteWebTestCase
     /**
      * @dataProvider provideInvalidCredentials
      */
-    public function testLoginCheckFails($username, $password)
+    public function testLoginCheckFails($username, $password, string $messageExpected)
     {
         $crawler = $this->client->request(Request::METHOD_GET, '/connexion');
 
@@ -79,7 +80,7 @@ class AdherentSecurityControllerTest extends SqliteWebTestCase
 
         $this->assertResponseStatusCode(Response::HTTP_OK, $this->client->getResponse());
         $this->assertCount(1, $error = $crawler->filter('#auth-error'));
-        $this->assertSame('L\'adresse e-mail et le mot de passe que vous avez saisis ne correspondent pas.', trim($error->text()));
+        $this->assertSame($messageExpected, trim($error->text()));
     }
 
     public function provideInvalidCredentials()
@@ -88,14 +89,22 @@ class AdherentSecurityControllerTest extends SqliteWebTestCase
             'Unregistered adherent account' => [
                 'foobar@foo.tld',
                 'foo-bar-pass',
+                'L\'adresse e-mail et le mot de passe que vous avez saisis ne correspondent pas.',
             ],
             'Registered enabled adherent' => [
                 'carl999@example.fr',
                 'foo-bar-pass',
+                'L\'adresse e-mail et le mot de passe que vous avez saisis ne correspondent pas.',
             ],
-            'Registered disabled account' => [
+            'Registered not validated account' => [
                 'michelle.dufour@example.ch',
                 'secret!12345',
+                'Pour vous connecter vous devez confirmer votre adhésion. Si vous n\'avez pas reçu le mail de validation, vous pouvez cliquer ici pour le recevoir à nouveau.',
+            ],
+            'Registered disabled account' => [
+                'simple-user-disabled@example.ch',
+                'secret!12345',
+                'Votre compte à été désactivé.',
             ],
         ];
     }
@@ -216,6 +225,7 @@ class AdherentSecurityControllerTest extends SqliteWebTestCase
         parent::setUp();
 
         $this->init([
+            LoadUserData::class,
             LoadAdherentData::class,
             LoadHomeBlockData::class,
         ]);
