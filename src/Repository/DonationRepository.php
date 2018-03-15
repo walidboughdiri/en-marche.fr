@@ -2,7 +2,6 @@
 
 namespace AppBundle\Repository;
 
-use AppBundle\Entity\Adherent;
 use AppBundle\Entity\Donation;
 use Doctrine\ORM\EntityRepository;
 
