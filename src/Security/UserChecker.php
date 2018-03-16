@@ -30,17 +30,17 @@ class UserChecker implements UserCheckerInterface
      */
     public function checkPostAuth(UserInterface $user)
     {
-        if (!$user instanceof Adherent) {
+        /** @var Adherent $user */
+        if (!$user instanceof Adherent && !$user->isEnabled()) {
             return;
         }
 
-        if (!$user->isEnabled()) {
-            if (!$user->getActivatedAt()) {
-                throw new AccountNotValidatedException($user, $this->router->generate('adherent_resend_validation'));
-            }
-            $ex = new DisabledException('Account disabled.');
-            $ex->setUser($user);
-            throw $ex;
+        if (!$user->getActivatedAt()) {
+            throw new AccountNotValidatedException($user, $this->router->generate('adherent_resend_validation'));
         }
+
+        $ex = new DisabledException('Account disabled.');
+        $ex->setUser($user);
+        throw $ex;
     }
 }
