@@ -32,7 +32,7 @@ class UserChecker implements UserCheckerInterface
     {
         /** @var Adherent $user */
         if (!$user instanceof Adherent && $user->isEnabled()) {
-            return;
+            throw new \UnexpectedValueException(sprintf('You have to pass and Adherent instance.'));
         }
 
         if (!$user->getActivatedAt()) {
