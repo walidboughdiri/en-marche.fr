@@ -28,7 +28,7 @@ class AdherentSecurityControllerTest extends SqliteWebTestCase
     /* @var EmailRepository */
     private $emailRepository;
 
-    public function testAuthenticationIsSuccessful()
+    public function testAuthenticationIsSuccessful(): void
     {
         $crawler = $this->client->request(Request::METHOD_GET, '/connexion');
 
@@ -61,7 +61,7 @@ class AdherentSecurityControllerTest extends SqliteWebTestCase
     /**
      * @dataProvider provideInvalidCredentials
      */
-    public function testLoginCheckFails($username, $password, string $messageExpected)
+    public function testLoginCheckFails(string $username, string $password, string $messageExpected): void
     {
         $crawler = $this->client->request(Request::METHOD_GET, '/connexion');
 
@@ -83,7 +83,7 @@ class AdherentSecurityControllerTest extends SqliteWebTestCase
         $this->assertSame($messageExpected, trim($error->text()));
     }
 
-    public function provideInvalidCredentials()
+    public function provideInvalidCredentials(): array
     {
         return [
             'Unregistered adherent account' => [
@@ -109,7 +109,7 @@ class AdherentSecurityControllerTest extends SqliteWebTestCase
         ];
     }
 
-    public function testRetrieveForgotPasswordAction()
+    public function testRetrieveForgotPasswordAction(): void
     {
         $crawler = $this->client->request(Request::METHOD_GET, '/mot-de-passe-oublie');
 
@@ -119,7 +119,7 @@ class AdherentSecurityControllerTest extends SqliteWebTestCase
         $this->assertCount(0, $crawler->filter('.form__error'), 'No error should be displayed on initial display');
     }
 
-    public function testRetrieveForgotPasswordActionWithEmptyEmail()
+    public function testRetrieveForgotPasswordActionWithEmptyEmail(): void
     {
         $crawler = $this->client->request(Request::METHOD_GET, '/mot-de-passe-oublie');
 
@@ -134,7 +134,7 @@ class AdherentSecurityControllerTest extends SqliteWebTestCase
         $this->assertContains('Cette valeur ne doit pas être vide.', $error->text(), 'An empty email should be erroneous.');
     }
 
-    public function testRetrieveForgotPasswordActionWithUnknownEmail()
+    public function testRetrieveForgotPasswordActionWithUnknownEmail(): void
     {
         $crawler = $this->client->request(Request::METHOD_GET, '/mot-de-passe-oublie');
 
@@ -156,7 +156,7 @@ class AdherentSecurityControllerTest extends SqliteWebTestCase
         $this->assertCount(0, $this->emailRepository->findRecipientMessages(AdherentResetPasswordMessage::class, 'toto@example.org'), 'No mail should have been sent to unknown account.');
     }
 
-    public function testRetrieveForgotPasswordActionWithKnownEmailSendEmail()
+    public function testRetrieveForgotPasswordActionWithKnownEmailSendEmail(): void
     {
         $crawler = $this->client->request(Request::METHOD_GET, '/mot-de-passe-oublie');
 
@@ -179,7 +179,7 @@ class AdherentSecurityControllerTest extends SqliteWebTestCase
         $this->assertCount(1, $this->emailRepository->findRecipientMessages(AdherentResetPasswordMessage::class, 'carl999@example.fr'), 'An email should have been sent.');
     }
 
-    public function testResetPasswordAction()
+    public function testResetPasswordAction(): void
     {
         $client = $this->makeClient(false, ['HTTP_HOST' => $this->hosts['app']]);
         $adherent = $this->getAdherentRepository()->findOneByEmail('michelle.dufour@example.ch');
