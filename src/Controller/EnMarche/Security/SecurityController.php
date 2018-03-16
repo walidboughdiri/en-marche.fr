@@ -137,7 +137,7 @@ class SecurityController extends Controller
     }
 
     /**
-     * @Route("/renvoyer-validation", name="app_membership_resend_validation")
+     * @Route("/renvoyer-validation", name="adherent_resend_validation")
      * @Method("GET")
      */
     public function resendValidationEmailAction(MembershipRequestHandler $membershipRequestHandler, AuthenticationUtils $authenticationUtils, AdherentRepository $adherentRepository): Response

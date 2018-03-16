@@ -104,7 +104,7 @@ class AdherentSecurityControllerTest extends SqliteWebTestCase
             'Registered disabled account' => [
                 'simple-user-disabled@example.ch',
                 'secret!12345',
-                'Votre compte à été désactivé.',
+                'Votre compte a été désactivé.',
             ],
         ];
     }

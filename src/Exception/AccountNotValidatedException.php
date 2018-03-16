@@ -8,15 +8,25 @@ use Throwable;
 
 class AccountNotValidatedException extends AccountStatusException
 {
-    public function __construct(Adherent $adherent, int $code = 0, Throwable $previous = null)
+    private $redirect;
+
+    public function __construct(Adherent $adherent, string $redirect, int $code = 0, Throwable $previous = null)
     {
-        parent::__construct(sprintf('Account[%s] tried to connect without validated his email.', $adherent->getEmailAddress()), $code, $previous);
+        parent::__construct('Account not validated.', $code, $previous);
 
         $this->setUser($adherent);
+        $this->redirect = $redirect;
     }
 
     public function getMessageKey()
     {
-        return 'Account have to be validated ! Please Check your mailbox.';
+        return 'adherent.error.must_be_validated';
+    }
+
+    public function getMessageData()
+    {
+        return [
+            'url' => $this->redirect,
+        ];
     }
 }
