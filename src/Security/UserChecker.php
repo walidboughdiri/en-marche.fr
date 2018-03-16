@@ -31,7 +31,7 @@ class UserChecker implements UserCheckerInterface
     public function checkPostAuth(UserInterface $user)
     {
         /** @var Adherent $user */
-        if (!$user instanceof Adherent && !$user->isEnabled()) {
+        if (!$user instanceof Adherent && $user->isEnabled()) {
             return;
         }
 
