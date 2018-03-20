@@ -29,7 +29,6 @@ class AccountNotValidatedException extends AccountStatusException
         ];
     }
 
-
     /**
      * {@inheritdoc}
      */
