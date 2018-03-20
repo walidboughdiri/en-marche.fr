@@ -28,4 +28,26 @@ class AccountNotValidatedException extends AccountStatusException
             'url' => $this->redirect,
         ];
     }
+
+
+    /**
+     * {@inheritdoc}
+     */
+    public function serialize()
+    {
+        return serialize(array(
+            $this->redirect,
+            parent::serialize(),
+        ));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function unserialize($str)
+    {
+        list($this->redirect, $parentData) = unserialize($str);
+
+        parent::unserialize($parentData);
+    }
 }
