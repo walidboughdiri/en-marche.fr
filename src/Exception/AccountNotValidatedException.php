@@ -45,7 +45,7 @@ class AccountNotValidatedException extends AccountStatusException
      */
     public function unserialize($str)
     {
-        list($this->redirect, $parentData) = unserialize($str);
+        [$this->redirect, $parentData] = unserialize($str);
 
         parent::unserialize($parentData);
     }
