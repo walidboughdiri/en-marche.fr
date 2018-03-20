@@ -31,8 +31,12 @@ class UserChecker implements UserCheckerInterface
     public function checkPostAuth(UserInterface $user)
     {
         /** @var Adherent $user */
-        if (!$user instanceof Adherent && $user->isEnabled()) {
-            throw new \UnexpectedValueException(sprintf('You have to pass and Adherent instance.'));
+        if (!$user instanceof Adherent) {
+            throw new \UnexpectedValueException('You have to pass an Adherent instance.');
+        }
+
+        if ($user->isEnabled()) {
+            return;
         }
 
         if (!$user->getActivatedAt()) {
