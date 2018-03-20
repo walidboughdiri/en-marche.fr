@@ -35,16 +35,14 @@ class UserChecker implements UserCheckerInterface
             throw new \UnexpectedValueException('You have to pass an Adherent instance.');
         }
 
-        if ($user->isEnabled()) {
-            return;
-        }
+        if (!$user->isEnabled()) {
+            if ($user->getActivatedAt()) {
+                $ex = new DisabledException('Account disabled.');
+                $ex->setUser($user);
+                throw $ex;
+            }
 
-        if (!$user->getActivatedAt()) {
             throw new AccountNotValidatedException($user, $this->router->generate('adherent_resend_validation'));
         }
-
-        $ex = new DisabledException('Account disabled.');
-        $ex->setUser($user);
-        throw $ex;
     }
 }
